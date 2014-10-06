@@ -8,6 +8,7 @@
 #   HUBOT_GITHUB_TOKEN
 #   HUBOT_GITHUB_USER
 #   HUBOT_GITHUB_API
+#   HUBOT_RELEASE_DEFAULT_REPO
 #   HUBOT_RELEASE_MAIL_FROM
 #   HUBOT_RELEASE_MAIL_TO
 #   HUBOT_RELEASE_SMTP_HOST
@@ -33,12 +34,14 @@ module.exports = (robot) ->
     # env vars
     unless (url_api_base = process.env.HUBOT_GITHUB_API)?
         url_api_base = "https://api.github.com"
+    unless (default_repo = process.env.HUBOT_RELEASE_DEFAULT_REPO)?
+        throw new Error("dankosaur/hubot-release-announce")
     unless (from_email = process.env.HUBOT_RELEASE_MAIL_FROM)?
-        from_email = "dan@appneta.com"
+        throw new Error("HUBOT_RELEASE_MAIL_FROM required")
     unless (to_email = process.env.HUBOT_RELEASE_MAIL_TO)?
-        to_email = "dan@appneta.com"
+        throw new Error("HUBOT_RELEASE_MAIL_TO required")
     unless (smtp_host = process.env.HUBOT_RELEASE_SMTP_HOST)?
-        smtp_host = "smtp.sendgrid.net"
+        throw new Error("HUBOT_RELEASE_STMP_HOST required")
     unless (smtp_user = process.env.HUBOT_RELEASE_SMTP_USER)?
         throw new Error("HUBOT_RELEASE_STMP_USER required")
     unless (smtp_pass = process.env.HUBOT_RELEASE_SMTP_PASS)?
@@ -62,7 +65,7 @@ module.exports = (robot) ->
             repo = parts[0] + "/" + parts[1]
             pr = parts[2]
         else
-            repo = "tracelytics/tracelons"
+            repo = default_repo
             pr = parts[0]
 
         api_url = "#{url_api_base}/repos/#{repo}/issues/#{pr}"
