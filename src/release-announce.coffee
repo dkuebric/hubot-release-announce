@@ -92,7 +92,7 @@ module.exports = (robot) ->
                     "[##{num}](#{link})"
 
                 email_subject = "#{subject_prefix} #{pull.title}"
-                email_body = "###{pull.title}\n\n#{linked_body}\n\n[#{pr_url}](#{pr_url})"
+                email_body = "### #{pull.title}\n\n#{linked_body}\n\n[#{pr_url}](#{pr_url})"
 
                 mail =
                     from: from_email
