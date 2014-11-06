@@ -14,6 +14,7 @@
 #   HUBOT_RELEASE_SMTP_HOST
 #   HUBOT_RELEASE_SMTP_USER
 #   HUBOT_RELEASE_SMTP_PASS
+#   HUBOT_RELEASE_SUBJECT_PREFIX
 #
 # Commands:
 #   hubot release announce [repo/pr-id] - Sends a release email based on the text of the PR.  Repo name is optional; defaults to tracelons.
@@ -46,6 +47,10 @@ module.exports = (robot) ->
         throw new Error("HUBOT_RELEASE_STMP_USER required")
     unless (smtp_pass = process.env.HUBOT_RELEASE_SMTP_PASS)?
         throw new Error("HUBOT_RELEASE_STMP_PASS required")
+    if process.env.HUBOT_RELEASE_SUBJECT_PREFIX?
+        subject_prefix = process.env.HUBOT_RELEASE_SUBJECT_PREFIX
+    else
+        subject_prefix = "[release]"
 
     # email transport
     mailer = nodemailer.createTransport
@@ -86,7 +91,7 @@ module.exports = (robot) ->
                     link = "#{base_issue_url}/#{num}"
                     "[##{num}](#{link})"
 
-                email_subject = "[release] #{pull.title}"
+                email_subject = "#{subject_prefix} #{pull.title}"
                 email_body = "###{pull.title}\n\n#{linked_body}\n\n[#{pr_url}](#{pr_url})"
 
                 mail =
