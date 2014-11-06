@@ -85,7 +85,7 @@ module.exports = (robot) ->
             else
                 # construct email
                 base_issue_url = "https://github.com/#{repo}/issues"
-                pr_url = "#{base_issue_url}/#{pr}"
+                pr_url = "https://github.com/#{repo}/pull/#{pr}"
                 linked_body = pull.body.replace /#(\d+)/g, (match) ->
                     num = match.slice 1
                     link = "#{base_issue_url}/#{num}"
